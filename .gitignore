@@ -1,4 +1,47 @@
-__pychache__
-venv
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Python virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables and secrets
 .env
-node_modules
+.env.*
+!.env.example
+
+# Node.js dependencies
+node_modules/
+
+# Training datasets
+ai-model/datasets/
+ai-model/data/
+ai-model/.dimpsar_staging/
+
+# Temporary training files
+ai-model/checkpoints/
+ai-model/runs/
+ai-model/logs/
+*.pth.tmp
+
+# Build and temporary files
+dist/
+build/
+*.log
+*.tmp
+
+# IDE and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Root-level datasets
+datasets/
+
+# Additional dataset folders
+**/datasets/
