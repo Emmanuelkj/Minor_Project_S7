@@ -38,7 +38,7 @@ export default function Dashboard({
             Smart Crop Health & Telemetry Center
           </h2>
           <p className="text-xs md:text-sm text-slate-300">
-            Real-time IoT sensor telemetry active. <strong>{healthyPlantsCount} of {plants.length} registered crops</strong> are optimal.
+            Real-time IoT sensor telemetry active.
           </p>
         </div>
 

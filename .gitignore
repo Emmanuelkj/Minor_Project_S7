@@ -45,3 +45,9 @@ datasets/
 
 # Additional dataset folders
 **/datasets/
+
+# Runtime uploads and local test images
+backend/uploads/*
+!backend/uploads/.gitkeep
+ai-model/test_leaf.*
+ai-model/test_image.py

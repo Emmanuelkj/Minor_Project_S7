@@ -367,11 +367,12 @@ export default function LeafScanner({ onAnalyzeCompleted }) {
               className="bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-emerald-500"
             >
               <option value="">Auto-Detect Crop Type</option>
-              <option value="Tomato">Tomato</option>
-              <option value="Potato">Potato</option>
-              <option value="Corn">Corn (Maize)</option>
               <option value="Apple">Apple</option>
-              <option value="Grape">Grape</option>
+              <option value="Banana">Banana</option>
+              <option value="Citrus">Citrus</option>
+              <option value="Guava">Guava</option>
+              <option value="Mango">Mango</option>
+              <option value="Papaya">Papaya</option>
             </select>
           </div>
         </div>

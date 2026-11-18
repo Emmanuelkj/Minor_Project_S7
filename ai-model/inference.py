@@ -20,60 +20,45 @@ except ImportError:
 
 from disease_db import get_disease_info, DISEASE_KNOWLEDGE_BASE
 
-# Standard 38 PlantVillage Classes (matching mobilenetv2_plant.pth weights)
-PLANTVILLAGE_38_CLASSES = [
-    'Apple___Apple_scab',
-    'Apple___Black_rot',
-    'Apple___Cedar_apple_rust',
-    'Apple___healthy',
-    'Blueberry___healthy',
-    'Cherry_(including_sour)___Powdery_mildew',
-    'Cherry_(including_sour)___healthy',
-    'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot',
-    'Corn_(maize)___Common_rust_',
-    'Corn_(maize)___Northern_Leaf_Blight',
-    'Corn_(maize)___healthy',
-    'Grape___Black_rot',
-    'Grape___Esca_(Black_Measles)',
-    'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)',
-    'Grape___healthy',
-    'Orange___Haunglongbing_(Citrus_greening)',
-    'Peach___Bacterial_spot',
-    'Peach___healthy',
-    'Pepper,_bell___Bacterial_spot',
-    'Pepper,_bell___healthy',
-    'Potato___Early_blight',
-    'Potato___Late_blight',
-    'Potato___healthy',
-    'Raspberry___healthy',
-    'Soybean___healthy',
-    'Squash___Powdery_mildew',
-    'Strawberry___Leaf_scorch',
-    'Strawberry___healthy',
-    'Tomato___Bacterial_spot',
-    'Tomato___Early_blight',
-    'Tomato___Late_blight',
-    'Tomato___Leaf_Mold',
-    'Tomato___Septoria_leaf_spot',
-    'Tomato___Spider_mites Two-spotted_spider_mite',
-    'Tomato___Target_Spot',
-    'Tomato___Tomato_Yellow_Leaf_Curl_Virus',
-    'Tomato___Tomato_mosaic_virus',
-    'Tomato___healthy'
+# ABCGMP 12-Class Fruit Leaf Model (Apple, Banana, Citrus, Guava, Mango, Papaya)
+ABCGMP_CLASSES_PATH = os.path.join(os.path.dirname(__file__), "abcgmp_classes.json")
+WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), "mobilenetv2_abcgmp.pth")
+
+DEFAULT_ABCGMP_CLASSES = [
+    "Apple___Black_rot",
+    "Apple___healthy",
+    "Banana___Cordana",
+    "Banana___healthy",
+    "Citrus___Canker",
+    "Citrus___healthy",
+    "Guava___Red_Rust",
+    "Guava___healthy",
+    "Mango___Bacterial_Canker",
+    "Mango___healthy",
+    "Papaya___Ring_Spot",
+    "Papaya___healthy"
 ]
 
-WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), "mobilenetv2_plant.pth")
+
+def _load_class_names():
+    """Load class names from abcgmp_classes.json, falling back to default list."""
+    if os.path.exists(ABCGMP_CLASSES_PATH):
+        with open(ABCGMP_CLASSES_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return DEFAULT_ABCGMP_CLASSES
 
 
 class MobileNetV2LeafClassifier:
     def __init__(self):
-        self.class_names = PLANTVILLAGE_38_CLASSES
+        self.class_names = _load_class_names()
         self.device = torch.device("cpu") if PYTORCH_AVAILABLE else None
         self.model = None
 
         if PYTORCH_AVAILABLE:
+            # Matches train_abcgmp.py validation preprocessing
             self.transform = transforms.Compose([
-                transforms.Resize((224, 224)),
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
                 transforms.ToTensor(),
                 transforms.Normalize(
                     mean=[0.485, 0.456, 0.406],
@@ -82,12 +67,12 @@ class MobileNetV2LeafClassifier:
             ])
             self._load_model()
         else:
-            print("[!] Warning: PyTorch is not available. Running in fallback mode.")
+            print("[!] Warning: PyTorch is not available. Deep learning inference will be disabled.")
 
     def _load_model(self):
-        """Build MobileNetV2 architecture and load pre-trained PlantVillage weights."""
+        """Build MobileNetV2 architecture and load ABCGMP trained weights."""
         try:
-            print(f"[*] Initializing MobileNetV2 architecture (38 classes)...")
+            print(f"[*] Initializing MobileNetV2 architecture ({len(self.class_names)} classes)...")
             model = models.mobilenet_v2(weights=None)
             in_features = model.classifier[1].in_features
             model.classifier[1] = nn.Sequential(
@@ -98,9 +83,11 @@ class MobileNetV2LeafClassifier:
             if os.path.exists(WEIGHTS_PATH):
                 state_dict = torch.load(WEIGHTS_PATH, map_location=self.device)
                 model.load_state_dict(state_dict)
-                print(f"[+] Loaded pre-trained MobileNetV2 weights from {WEIGHTS_PATH}")
+                print(f"[+] Loaded ABCGMP MobileNetV2 weights from {WEIGHTS_PATH}")
             else:
-                print(f"[?] Model weights file '{WEIGHTS_PATH}' not found. Using initialized backbone.")
+                print(f"[!] Model weights file '{WEIGHTS_PATH}' not found.")
+                self.model = None
+                return
 
             model.eval()
             self.model = model
@@ -144,12 +131,9 @@ class MobileNetV2LeafClassifier:
                 # Get top prediction within target crop
                 best_idx = crop_indices[np.argmax([probabilities[i] for i in crop_indices])]
                 selected_key = self.class_names[best_idx]
-                confidence = float(np.round(probabilities[best_idx] * 100.0, 1))
+                confidence = round(float(probabilities[best_idx] * 100.0), 2)
 
-                # If confidence is lower due to multiclass spread, scale realistically
-                confidence = float(np.clip(confidence, 88.5, 99.4))
-
-                # Top 3 predictions breakdown
+                # Top 3 predictions breakdown with authentic softmax probabilities
                 sorted_indices = sorted(crop_indices, key=lambda i: probabilities[i], reverse=True)[:3]
                 top_classes = []
                 for idx in sorted_indices:
@@ -157,14 +141,14 @@ class MobileNetV2LeafClassifier:
                     top_classes.append({
                         "class_key": self.class_names[idx],
                         "label": f"{info['crop']} - {info['disease_name']}",
-                        "confidence": float(np.round(probabilities[idx] * 100.0, 1))
+                        "confidence": round(float(probabilities[idx] * 100.0), 2)
                     })
 
                 disease_info = get_disease_info(selected_key)
 
                 return {
                     "success": True,
-                    "model": "MobileNetV2 (PlantVillage)",
+                    "model": "MobileNetV2 (ABCGMP)",
                     "class_key": selected_key,
                     "crop": disease_info["crop"],
                     "disease": disease_info["disease_name"],
@@ -182,41 +166,23 @@ class MobileNetV2LeafClassifier:
                 }
 
             except Exception as e:
-                print(f"[!] Neural network inference error, using CV fallback: {e}")
+                print(f"[!] Neural network inference error: {e}")
+                return {
+                    "success": False,
+                    "error": f"Inference execution failed: {str(e)}",
+                    "status": "Error",
+                    "disease": "Inference Error",
+                    "confidence": 0.0,
+                    "recommendation": "Neural network inference failed. Please check the model checkpoint and input image."
+                }
 
-        # 2. Fallback: Computer Vision chlorophyll/spot analysis
-        return self._cv_fallback_predict(img, target_crop)
-
-    def _cv_fallback_predict(self, img: Image.Image, target_crop: str = None) -> dict:
-        arr = np.array(img.resize((224, 224)), dtype=np.float32) / 255.0
-        r, g, b = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
-        is_leaf = ~((r > 0.93) & (g > 0.93) & (b > 0.93)) & ~((r < 0.07) & (g < 0.07) & (b < 0.07))
-        total_leaf = max(1, int(np.sum(is_leaf)))
-
-        is_green = is_leaf & (g > r * 1.05) & (g > b * 1.05)
-        green_ratio = float(np.sum(is_green) / total_leaf)
-
-        is_spot = is_leaf & ~is_green & (
-            ((r > g * 0.92) & (r > 0.22) & (b < 0.50)) |
-            ((r < 0.22) & (g < 0.22) & (b < 0.22))
-        )
-        spot_ratio = float(np.sum(is_spot) / total_leaf)
-
-        is_healthy = green_ratio > 0.45 and spot_ratio < 0.07
-        crop_prefix = f"{target_crop}___" if target_crop else "Tomato___"
-        selected_key = f"{crop_prefix}healthy" if is_healthy else f"{crop_prefix}Early_blight"
-
-        disease_info = get_disease_info(selected_key)
         return {
-            "success": True,
-            "model": "Computer Vision Leaf Feature Extractor",
-            "class_key": selected_key,
-            "crop": disease_info["crop"],
-            "disease": disease_info["disease_name"],
-            "status": disease_info["status"],
-            "severity": disease_info.get("severity", "None"),
-            "confidence": 94.5 if is_healthy else 91.2,
-            "recommendation": f"[{disease_info['status']}] {disease_info.get('organic_remedies', [''])[0]}"
+            "success": False,
+            "error": "MobileNetV2 (ABCGMP) model is not loaded or PyTorch is unavailable.",
+            "status": "Error",
+            "disease": "Model Unavailable",
+            "confidence": 0.0,
+            "recommendation": "MobileNetV2 ABCGMP weights are unavailable or failed to initialize."
         }
 
 

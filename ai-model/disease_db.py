@@ -365,6 +365,209 @@ DISEASE_KNOWLEDGE_BASE = {
         "organic_remedies": ["Prune excess foliage."],
         "chemical_remedies": ["None required."],
         "preventive_measures": ["Regular leaf pulling around grape bunches."]
+    },
+    "Banana___Cordana": {
+        "crop": "Banana",
+        "disease_name": "Cordana Leaf Spot",
+        "scientific_name": "Neocordana musae",
+        "status": "Diseased",
+        "severity": "Moderate",
+        "symptoms": [
+            "Pale brown oval leaf spots surrounded by bright yellow halos",
+            "Lesions coalesce along leaf margins causing necrotic patches",
+            "Premature drying and browning of older foliage"
+        ],
+        "causes": "High humidity, prolonged rainfall, and poor drainage around banana mats.",
+        "organic_remedies": [
+            "Prune and destroy heavily spotted older leaves to reduce spore load.",
+            "Apply copper-based organic fungicide or neem oil spray.",
+            "Improve airflow and spacing between banana suckers."
+        ],
+        "chemical_remedies": [
+            "Apply Mancozeb or Chlorothalonil protective fungicide spray.",
+            "Alternate with Azoxystrobin or Propiconazole in severe outbreaks."
+        ],
+        "preventive_measures": [
+            "Avoid overhead irrigation and keep foliage dry.",
+            "Maintain balanced potassium and nitrogen nutrition."
+        ]
+    },
+    "Banana___healthy": {
+        "crop": "Banana",
+        "disease_name": "Healthy Banana",
+        "scientific_name": "Musa acuminata",
+        "status": "Healthy",
+        "severity": "None",
+        "symptoms": [
+            "Broad, vibrant green leaf blades without necrotic margins",
+            "No fungal spotting or chlorotic streaks"
+        ],
+        "causes": "Optimal tropical moisture, balanced soil nutrients, and good drainage.",
+        "organic_remedies": ["Maintain organic mulching and compost feeding."],
+        "chemical_remedies": ["No chemical treatment required."],
+        "preventive_measures": ["Inspect older lower leaves regularly and maintain good drainage."]
+    },
+    "Citrus___Canker": {
+        "crop": "Citrus",
+        "disease_name": "Citrus Canker",
+        "scientific_name": "Xanthomonas citri",
+        "status": "Diseased",
+        "severity": "High",
+        "symptoms": [
+            "Raised corky brown lesions surrounded by water-soaked yellow halos",
+            "Crater-like scabs visible on both upper and lower leaf surfaces",
+            "Premature leaf drop and twig dieback in severe cases"
+        ],
+        "causes": "Bacterial spread via wind-driven rain, contaminated tools, and leafminer wounds.",
+        "organic_remedies": [
+            "Prune and burn infected twigs and leaves during dry weather.",
+            "Apply liquid copper hydroxide or Bordeaux mixture spray.",
+            "Control citrus leafminer pests with neem oil to prevent entry wounds."
+        ],
+        "chemical_remedies": [
+            "Spray copper oxychloride or streptomycin-based bactericides during flush growth.",
+            "Apply systemic insecticide if citrus leafminer infestation is present."
+        ],
+        "preventive_measures": [
+            "Sanitize pruning shears with disinfectant between trees.",
+            "Plant windbreaks around citrus orchards to limit wind-blown rain."
+        ]
+    },
+    "Citrus___healthy": {
+        "crop": "Citrus",
+        "disease_name": "Healthy Citrus",
+        "scientific_name": "Citrus spp.",
+        "status": "Healthy",
+        "severity": "None",
+        "symptoms": [
+            "Glossy dark green foliage with smooth leaf surfaces",
+            "Absence of corky lesions, yellowing, or leafminer tunnels"
+        ],
+        "causes": "Well-drained soil, adequate sunlight, and micronutrient availability.",
+        "organic_remedies": ["Continue balanced citrus fertilizer and compost."],
+        "chemical_remedies": ["No chemical treatment required."],
+        "preventive_measures": ["Monitor new leaf flushes for pests and fungal spots."]
+    },
+    "Guava___Red_Rust": {
+        "crop": "Guava",
+        "disease_name": "Red Rust (Algal Leaf Spot)",
+        "scientific_name": "Cephaleuros virescens",
+        "status": "Diseased",
+        "severity": "Moderate",
+        "symptoms": [
+            "Velvety orange-red to rust-colored circular patches on upper leaf surfaces",
+            "Lesions turn grey-green as algal colonies age",
+            "Reduced photosynthesis and premature leaf shedding"
+        ],
+        "causes": "Warm, humid, shady conditions with poor canopy air circulation.",
+        "organic_remedies": [
+            "Prune dense canopy branches to increase sunlight and airflow.",
+            "Spray Bordeaux mixture (1%) or copper-based bio-fungicide.",
+            "Remove and destroy fallen infected leaves."
+        ],
+        "chemical_remedies": [
+            "Apply Copper Oxychloride (0.3%) spray at 15-day intervals during rainy season."
+        ],
+        "preventive_measures": [
+            "Avoid crowding trees and maintain proper orchard sanitation.",
+            "Strengthen plant vigor with balanced NPK and zinc fertilization."
+        ]
+    },
+    "Guava___healthy": {
+        "crop": "Guava",
+        "disease_name": "Healthy Guava",
+        "scientific_name": "Psidium guajava",
+        "status": "Healthy",
+        "severity": "None",
+        "symptoms": [
+            "Firm green leaves with prominent clear venation",
+            "Free from algal rust patches or dark fungal spots"
+        ],
+        "causes": "Good sunlight exposure, airflow, and balanced nutrition.",
+        "organic_remedies": ["Maintain organic compost mulching around root zone."],
+        "chemical_remedies": ["No chemical treatment required."],
+        "preventive_measures": ["Prune lightly after harvest to maintain an open canopy."]
+    },
+    "Mango___Bacterial_Canker": {
+        "crop": "Mango",
+        "disease_name": "Bacterial Canker",
+        "scientific_name": "Xanthomonas citri pv. mangiferaeindicae",
+        "status": "Diseased",
+        "severity": "High",
+        "symptoms": [
+            "Angular dark water-soaked lesions restricted by leaf veins",
+            "Raised black corky spots surrounded by narrow yellow halos",
+            "Gummy bacterial ooze on stems and severe defoliation"
+        ],
+        "causes": "Warm, wet weather, wind-driven rain, and mechanical leaf injury.",
+        "organic_remedies": [
+            "Prune and destroy infected shoots and leaves promptly.",
+            "Spray copper hydroxide or Bordeaux mixture prior to monsoon rains."
+        ],
+        "chemical_remedies": [
+            "Apply Streptocycline (100-200 ppm) combined with Copper Oxychloride (0.3%)."
+        ],
+        "preventive_measures": [
+            "Use disease-free grafted planting material.",
+            "Disinfect pruning tools and avoid working in wet orchards."
+        ]
+    },
+    "Mango___healthy": {
+        "crop": "Mango",
+        "disease_name": "Healthy Mango",
+        "scientific_name": "Mangifera indica",
+        "status": "Healthy",
+        "severity": "None",
+        "symptoms": [
+            "Long, glossy dark-green leathery leaves",
+            "No angular black lesions, anthracnose spots, or powdery mildew"
+        ],
+        "causes": "Optimal sunlight, dry flowering conditions, and proper orchard sanitation.",
+        "organic_remedies": ["Continue seasonal organic manuring and deep watering."],
+        "chemical_remedies": ["No chemical treatment required."],
+        "preventive_measures": ["Keep canopy aerated and clear fallen debris."]
+    },
+    "Papaya___Ring_Spot": {
+        "crop": "Papaya",
+        "disease_name": "Papaya Ringspot Virus (PRSV)",
+        "scientific_name": "Papaya ringspot virus (Potyvirus)",
+        "status": "Diseased",
+        "severity": "Critical",
+        "symptoms": [
+            "Distinctive yellow mosaic mottling and chlorosis on young leaves",
+            "Severe leaf distortion, blistering, and shoestring-like narrowing of lobes",
+            "Dark green oily streaks on petioles and stems; concentric rings on fruits"
+        ],
+        "causes": "Transmitted rapidly by sap-sucking aphids (Myzus persicae, Aphis gossypii).",
+        "organic_remedies": [
+            "Rogue (uproot and destroy) severely infected trees immediately to protect healthy plants.",
+            "Spray neem oil or insecticidal soap to suppress aphid vector populations.",
+            "Install reflective silver mulches to repel aphids."
+        ],
+        "chemical_remedies": [
+            "No chemical cure exists for viral infection; control aphid vectors with Imidacloprid or Thiamethoxam.",
+            "Apply mineral oil sprays to interfere with virus transmission."
+        ],
+        "preventive_measures": [
+            "Plant PRSV-tolerant or resistant papaya varieties.",
+            "Raise seedlings under fine insect-proof netting before transplanting.",
+            "Avoid growing cucurbits (pumpkin, squash) near papaya plots."
+        ]
+    },
+    "Papaya___healthy": {
+        "crop": "Papaya",
+        "disease_name": "Healthy Papaya",
+        "scientific_name": "Carica papaya",
+        "status": "Healthy",
+        "severity": "None",
+        "symptoms": [
+            "Uniformly green, deeply lobed palmate leaves with smooth margins",
+            "No yellow mosaic mottling, leaf curling, or oily petiole streaks"
+        ],
+        "causes": "Well-drained fertile soil, ample sunlight, and aphid-free environment.",
+        "organic_remedies": ["Maintain balanced compost feeding and light mulching."],
+        "chemical_remedies": ["No chemical treatment required."],
+        "preventive_measures": ["Monitor young crown leaves regularly for aphids and mosaic symptoms."]
     }
 }
 
